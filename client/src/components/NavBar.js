@@ -24,12 +24,12 @@ const NavBar = observer(() => {
                 <NavLink style={{color:'white'}} to={SHOP_ROUTE}>Поликек Проекты</NavLink>
                 {user.isAuth ?
                     <Nav className="ml-auto" style={{color: 'white'}}>
-                        <Button
+                        {user.role === 'ADMIN' && (<Button
                             variant={"outline-light"}
                             onClick={() => navigate(ADMIN_ROUTE)}
                         >
                             Админ панель
-                        </Button>
+                        </Button>)}
                         <Button
                             variant={"outline-light"}
                             onClick={() => logOut()}
