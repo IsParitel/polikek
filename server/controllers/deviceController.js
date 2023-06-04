@@ -1,16 +1,19 @@
 const uuid = require('uuid')
 const path = require('path');
-const {Device, DeviceInfo} = require('../models/models')
+const {Device, DeviceInfo, BasketDevice, Basket} = require('../models/models')
 const ApiError = require('../error/ApiError');
 
 class DeviceController {
     async create(req, res, next) {
         try {
             let {name, brandId, typeId, info} = req.body
+            const {id: userId} = req.user
             const {img} = req.files
             let fileName = uuid.v4() + ".jpg"
             await img.mv(path.resolve(__dirname, '..', 'static', fileName))
             const device = await Device.create({name, brandId, typeId, img: fileName});
+            const basket = await Basket.findOne({userId})
+            await BasketDevice.create({basketId: basket.id, deviceId: device.id})
 
             if (info) {
                 info = JSON.parse(info)

@@ -6,8 +6,7 @@ class BasketController {
     async getOne(req, res) {
         const { id: userId } = req.user;
 
-        // Создаем новую корзину для пользователя
-        const basket = await Basket.create({ userId });
+        const basket = await Basket.findOne({ where: { userId } });
 
         const basketDevices = await BasketDevice.findAll({ where: { basketId: basket.id } });
         const devices = await Device.findAll({
