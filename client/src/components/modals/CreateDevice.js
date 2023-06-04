@@ -12,9 +12,9 @@ const CreateDevice = observer(({show, onHide}) => {
     const [info, setInfo] = useState([])
 
     useEffect(() => {
-        fetchTypes().then(data => device.setTypes(data))
-        fetchBrands().then(data => device.setBrands(data))
-    }, [device])
+        fetchTypes().then(res => device.setTypes(res))
+        fetchBrands().then(res => device.setBrands(res))
+    }, [])
 
     const addInfo = () => {
         setInfo([...info, {title: '', description: '', number: Date.now()}])
@@ -56,27 +56,27 @@ const CreateDevice = observer(({show, onHide}) => {
                     <Dropdown className="mt-2 mb-2">
                         <Dropdown.Toggle>{device.selectedType.name || "Выберите специальность / кафедру"}</Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {device.types.map(type =>
+                            {device?.types?.length ? device.types.map(type =>
                                 <Dropdown.Item
                                     onClick={() => device.setSelectedType(type)}
                                     key={type.id}
                                 >
                                     {type.name}
                                 </Dropdown.Item>
-                            )}
+                            ) : "Нет записей"}
                         </Dropdown.Menu>
                     </Dropdown>
                     <Dropdown className="mt-2 mb-2">
                         <Dropdown.Toggle>{device.selectedBrand.name || "Выберите тип"}</Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {device.brands.map(brand =>
+                            {device?.brands?.length ? device.brands.map(brand =>
                                 <Dropdown.Item
                                     onClick={() => device.setSelectedBrand(brand)}
                                     key={brand.id}
                                 >
                                     {brand.name}
                                 </Dropdown.Item>
-                            )}
+                            ) : 'Нет записей'}
                         </Dropdown.Menu>
                     </Dropdown>
                     <Form.Control

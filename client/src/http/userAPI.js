@@ -1,20 +1,38 @@
 import {$authHost, $host} from "./index";
-import jwt_decode from "jwt-decode";
 
-export const registration = async (email, password) => {
-    const {data} = await $host.post('api/user/registration', {email, password, role: 'USER'})
-    localStorage.setItem('token', data.token)
-    return jwt_decode(data.token)
+export const registration = (email, password) => {
+    return $host.post('api/user/registration', {email, password, role: 'USER'})
+    .then((data) => {
+        localStorage.setItem('token', data.token)
+        return {
+            user: data.user,
+            basket: data.basket,
+        }
+    }).catch((e) => {
+        console.log(e)
+    })
 }
 
-export const login = async (email, password) => {
-    const {data} = await $host.post('api/user/login', {email, password})
-    localStorage.setItem('token', data.token)
-    return jwt_decode(data.token)
+export const login = (email, password) => {
+    return $host.post('api/user/login', {email, password}).then((data) => {
+        localStorage.setItem('token', data.token)
+        return {
+            user: data.user,
+            basket: data.basket,
+        }
+    }).catch((e) => {
+        console.log(e)
+    })
 }
 
-export const check = async () => {
-    const {data} = await $authHost.get('api/user/auth' )
-    localStorage.setItem('token', data.token)
-    return jwt_decode(data.token)
+export const check = () => {
+    return $authHost.get('api/user/auth').then((data) => {
+        localStorage.setItem('token', data.token)
+        return {
+            user: data.user,
+            basket: data.basket,
+        }
+    }).catch((e) => {
+        console.log(e)
+    })
 }

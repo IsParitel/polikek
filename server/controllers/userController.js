@@ -1,7 +1,8 @@
 const ApiError = require('../error/ApiError');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {User, Basket} = require('../models/models')
+const {User} = require('../models/models')
+const _ = require('lodash')
 
 const generateJwt = (id, email, role) => {
     return jwt.sign(
@@ -23,9 +24,8 @@ class UserController {
         }
         const hashPassword = await bcrypt.hash(password, 5)
         const user = await User.create({email, role, password: hashPassword})
-        const basket = await Basket.create({userId: user.id})
         const token = generateJwt(user.id, user.email, user.role)
-        return res.json({token})
+        return res.json({ token, user: _.omit(user.dataValues, 'password') })
     }
 
     async login(req, res, next) {
@@ -39,14 +39,14 @@ class UserController {
             return next(ApiError.internal('Указан неверный пароль'))
         }
         const token = generateJwt(user.id, user.email, user.role)
-        return res.json({token})
+        return res.json({ token, user: _.omit(user.dataValues, 'password') })
     }
 
     async check(req, res, next) {
         const email = req.user.email
         const user = await User.findOne({where: {email}})
         const token = generateJwt(req.user.id, req.user.email, req.user.role)
-        return res.json({ token, ...user })
+        return res.json({ token, user: _.omit(user.dataValues, 'password') })
     }
 }
 

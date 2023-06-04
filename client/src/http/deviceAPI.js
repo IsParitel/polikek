@@ -1,38 +1,31 @@
 import {$authHost, $host} from "./index";
 
 export const createType = async (type) => {
-    const {data} = await $authHost.post('api/type', type)
-    return data
+    return $authHost.post('api/type', type)
 }
 
 export const fetchTypes = async () => {
-    const {data} = await $host.get('api/type')
-    return data
+    return $host.get('api/type')
 }
 
-export const createBrand = async (brand) => {
-    const {data} = await $authHost.post('api/brand', brand)
-    return data
+export const createBrand = (brand) => {
+    return $authHost.post('api/brand', brand)
 }
 
-export const fetchBrands = async () => {
-    const {data} = await $host.get('api/brand', )
-    return data
+export const fetchBrands = () => {
+    return $host.get('api/brand')
 }
 
-export const createDevice = async (device) => {
-    const {data} = await $authHost.post('api/device', device)
-    return data
+export const createDevice = (device) => {
+    return $authHost.post('api/device', device)
 }
 
-export const fetchDevices = async (typeId, brandId, page, limit= 5) => {
-    const {data} = await $host.get('api/device', {params: {
+export const fetchDevices = (typeId, brandId, page, limit) => {
+    return $host.get('api/device', {params: {
             typeId, brandId, page, limit
         }})
-    return data
 }
 
 export const fetchOneDevice = async (id) => {
-    const {data} = await $host.get('api/device/' + id)
-    return data
+    return $host.get('api/device/' + id)
 }

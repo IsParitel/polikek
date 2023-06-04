@@ -7,7 +7,7 @@ const TypeBar = observer(() => {
     const {device} = useContext(Context)
     return (
         <ListGroup>
-            {device.types.map(type =>
+            {device?.types?.length ? device.types.map(type =>
                 <ListGroup.Item
                     style={{cursor: 'pointer'}}
                     active={type.id === device.selectedType.id}
@@ -16,7 +16,7 @@ const TypeBar = observer(() => {
                 >
                     {type.name}
                 </ListGroup.Item>
-            )}
+            ) : 'Нет записей'}
         </ListGroup>
     );
 });

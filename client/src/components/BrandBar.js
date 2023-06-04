@@ -8,7 +8,7 @@ const BrandBar = observer(() => {
 
     return (
         <Form className="d-flex">
-            {device.brands.map(brand =>
+            {device?.brands?.length ? device.brands.map(brand =>
                 <Card
                     style={{cursor:'pointer'}}
                     key={brand.id}
@@ -18,7 +18,7 @@ const BrandBar = observer(() => {
                 >
                     {brand.name}
                 </Card>
-            )}
+            ): 'Нет записей'}
         </Form>
     );
 });
