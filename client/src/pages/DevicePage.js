@@ -5,6 +5,7 @@ import {fetchOneDevice} from "../http/deviceAPI";
 import {observer} from "mobx-react-lite";
 import {Context} from "../index";
 import { addToDeviceToBasket } from '../http/deviceBasketAPI';
+
 const DevicePage = observer(() => {
     const {user} = useContext(Context)
     const [device, setDevice] = useState({info: []})
@@ -15,10 +16,13 @@ const DevicePage = observer(() => {
     }, [])
 
     function addToBasket() {
-        setLoading(true)
-        addToDeviceToBasket(user.user.id, user.basket.id).finally(() => {
-            setLoading(false)
-        })
+        if (device && device.id) {
+            setLoading(true)
+            addToDeviceToBasket(user.user.id, user.basket.id).finally(() => {
+                setLoading(false)})
+        } else {
+                console.error('Некорректный объект товара или отсутствует свойство id');
+            }
     }
 
     return (
